@@ -4,6 +4,7 @@ import json
 from random import randint
 import string
 from date.date import date
+from auth.reg import gethash
 
 def create(connect):
     data = json.loads(request.data)     # Преобразование body в json
@@ -46,13 +47,15 @@ def create(connect):
         for j in range(8):
             rand = randint(0, len(bukv)-1)
             password += bukv[rand]
-        command = user.insert().values(visitID=i[0], login=login, password=password, visit=True)
+
+        hashlog = gethash(login, password)
+        command = user.insert().values(visitID=i[0], hashlogin=hashlog, visit=True)
         connect.execute(command)
         connect.commit()
         return {
             "success": True,
             "message": "Визит успешно зарегестрирован и ожидает подтверждения",
             "data": {
-                "UserID": i[0]
+                "UserID": i[0], "login": login, "password": password
             }
         }

@@ -11,8 +11,7 @@ session = sessionmaker(bind=engine)
 user = Table("user", meta,
     Column("ID", Integer, primary_key=True),
     Column("visitID", Integer),
-    Column("login", String(100), nullable=False),
-    Column("password", String(100), nullable=False),
+    Column("hashlogin", String(250), nullable=False),
     Column("visit", Boolean, nullable=False)
 )
 
@@ -61,3 +60,4 @@ def base():
     connect = engine.connect()
     print("Base connect")
     return connect
+# base+connector/username:password@adress/table
